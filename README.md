@@ -1,4 +1,4 @@
-# 7Days-back / BACK END
+# 7Days-back
 
 ## Description
 7Days is an app that let's you plan your next 7 days interactively with your friends based on your free time
