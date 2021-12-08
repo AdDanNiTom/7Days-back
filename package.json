@@ -1,0 +1,29 @@
+{
+  "name": "7days-back",
+  "version": "1.0.0",
+  "description": "## Description 7Days is an app that let's you plan your next 7 days interactively with your friends based on your free time",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdDanNiTom/7Days-back.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AdDanNiTom/7Days-back/issues"
+  },
+  "homepage": "https://github.com/AdDanNiTom/7Days-back#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^6.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
