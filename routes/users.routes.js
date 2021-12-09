@@ -3,7 +3,6 @@ const User = require("../models/Users.model");
 const mongoose = require("mongoose");
 const router = express.Router();
 
-// we should have this impoted from a utils folder
 const createResponseObject = require("../utils/createResponseObject");
 
 // GET - DISPLAYS ALL USERS
