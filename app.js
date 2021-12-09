@@ -1,8 +1,9 @@
 require("dotenv/config");
-require("./db");
-
 const express = require("express");
 const app = express();
+require("./config")(app);
+require("./db");
+
 
 app.use(express.json());
 
@@ -16,4 +17,3 @@ const eventRouter = require("./routes/event.routes")
 app.use("/events", eventRouter);
 
 module.exports = app;
-
