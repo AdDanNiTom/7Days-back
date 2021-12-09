@@ -1,8 +1,9 @@
 require("dotenv/config");
-require("./db");
-
 const express = require("express");
 const app = express();
+require("./config")(app);
+require("./db");
+
 
 app.use(express.json());
 
@@ -13,4 +14,3 @@ const authRouter = require("./routes/auth.routes");
 app.use("/auth", authRouter);
 
 module.exports = app;
-
