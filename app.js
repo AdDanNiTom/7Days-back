@@ -17,6 +17,6 @@ app.use("/auth", authRouter);
 app.use("/api/users", usersRouter);
 
 const eventRouter = require("./routes/event.routes")
-app.use("/events", eventRouter);
+app.use("/api/events", eventRouter);
 
 module.exports = app;
