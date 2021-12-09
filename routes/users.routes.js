@@ -14,10 +14,10 @@ router.get("/", async (req, res) => {
       .status(200)
       .json(
         createResponseObject(
-          allUsers,
-          200,
-          "Successfuly retrieved list of users from database",
-          null
+          true,
+          res.statusCode,
+          "Data found successfully",
+          allUsers
         )
       );
   } catch (err) {
@@ -30,18 +30,24 @@ router.get("/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
     const foundUser = await User.findById(userId);
-    res
-      .status(200)
-      .json(
-        createResponseObject(
-          foundUser,
-          200,
-          `Here's the user from the database with the id: ${userId}`,
-          null
-        )
-      );
+
+    if (foundUser)
+      res
+        .status(200)
+        .json(
+          createResponseObject(
+            true,
+            res.statusCode,
+            `User with id: ${userId} found successfully.`,
+            foundUser
+          )
+        );
+    else {
+      res.status(404);
+      throw new Error("No user found with the specified id.");
+    }
   } catch (err) {
-    console.log(err);
+    res.json(createResponseObject(false, res.statusCode, err.message, null));
   }
 });
 
@@ -51,16 +57,26 @@ router.put("/:userId/edit", async (req, res) => {
     const { userId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(userId)) {
-      res.status(400).json({ message: "Specified id is not valid" });
-      return;
+      res.status(404);
+      throw new Error("Specified id is not valid");
     }
 
     const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
       new: true,
     });
-    res.json(updatedUser);
-  } catch (error) {
-    res.json(error);
+
+    res
+      .status(200)
+      .json(
+        createResponseObject(
+          true,
+          res.statusCode,
+          "User profile updated successfully.",
+          updatedUser
+        )
+      );
+  } catch (err) {
+    res.json(createResponseObject(false, res.statusCode, err.message, null));
   }
 });
 

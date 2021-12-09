@@ -1,9 +1,9 @@
-function createResponseObject(data, status, message, error) {
+function createResponseObject(success, status, message, data) {
   return {
-    data: data,
+    success: success,
     status: status,
     message: message,
-    error: error,
+    data: data,
   };
 }
 
