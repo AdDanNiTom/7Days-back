@@ -2,11 +2,14 @@ const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
 const eventsSchema = new Schema({
-  title: String,
+  title: {
+    type: String,
+    required: true
+  },
   description: String,
   owner: {
     type: Schema.Types.ObjectId,
-    ref: "User",
+    ref: "User"
   },
   location: [{ type: Number }, { type: Number }],
   attendees: [
@@ -20,4 +23,4 @@ const eventsSchema = new Schema({
   maxAtendees: Number
 });
 
-module.export = model("Event", eventsSchema);
+module.exports = model("Event", eventsSchema);
