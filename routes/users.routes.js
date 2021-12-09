@@ -3,44 +3,104 @@ const User = require("../models/Users.model");
 const mongoose = require("mongoose");
 const router = express.Router();
 
+const createResponseObject = require("../utils/createResponseObject");
+
 // GET - DISPLAYS ALL USERS
 router.get("/", async (req, res) => {
   try {
     const allUsers = await User.find();
-    res.json(allUsers);
+    res
+      .status(200)
+      .json(
+        createResponseObject(
+          true,
+          res.statusCode,
+          "Data found successfully",
+          allUsers
+        )
+      );
   } catch (err) {
-    console.log(err);
+    res
+      .status(500)
+      .json(createResponseObject(false, res.statusCode, err.message, null));
   }
 });
 
-// GET - FINDS ONE USER
-router.get("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const oneUser = await User.findById(id);
-    res.json(oneUser);
-  } catch (err) {
-    console.log(err);
-  }
-});
+router
+  .route("/:userId")
+  // GET - FINDS ONE USER
+  .get(async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const foundUser = await User.findById(userId);
 
-// PUT - EDITS USER INFO
-router.put("/:id/edit", async (req, res) => {
-  try {
-    const { id } = req.params;
-    console.log(req.body);
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      res.status(400).json({ message: "Specified id is not valid" });
-      return;
+      if (foundUser)
+        res
+          .status(200)
+          .json(
+            createResponseObject(
+              true,
+              res.statusCode,
+              `User with id: ${userId} found successfully.`,
+              foundUser
+            )
+          );
+      else {
+        res.status(404);
+        throw new Error("No user found with the specified id.");
+      }
+    } catch (err) {
+      res.json(createResponseObject(false, res.statusCode, err.message, null));
     }
+  })
+  // PUT - EDIT USER INFO
+  .put(async (req, res) => {
+    try {
+      const { userId } = req.params;
 
-    const updatedUser = await User.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
-    res.json(updatedUser);
-  } catch (error) {
-    res.json(error);
-  }
-});
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        res.status(404);
+        throw new Error("Specified id is not valid");
+      }
+      const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
+        new: true,
+      });
+      console.log("updated user", updatedUser);
+
+      res
+        .status(200)
+        .json(
+          createResponseObject(
+            true,
+            res.statusCode,
+            "User profile updated successfully.",
+            updatedUser
+          )
+        );
+    } catch (err) {
+      res.json(createResponseObject(false, res.statusCode, err.message, null));
+    }
+  })
+  // DELETE - DELETE A USER
+  .delete(async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const deletedUser = await User.findByIdAndDelete(userId);
+      res
+        .status(200)
+        .json(
+          createResponseObject(
+            true,
+            res.statusCode,
+            "User account successfully deleted",
+            deletedUser
+          )
+        );
+    } catch (err) {
+      res
+        .status(500)
+        .json(createResponseObject(false, res.statusCode, err.message, null));
+    }
+  });
 
 module.exports = router;
