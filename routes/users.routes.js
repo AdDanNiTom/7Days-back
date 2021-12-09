@@ -7,7 +7,6 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const allUsers = await User.find();
-    console.log("hey");
     res.json(allUsers);
   } catch (err) {
     console.log(err);
@@ -29,16 +28,16 @@ router.get("/:id", async (req, res) => {
 router.put("/:id/edit", async (req, res) => {
   try {
     const { id } = req.params;
-
+    console.log(req.body);
     if (!mongoose.Types.ObjectId.isValid(id)) {
       res.status(400).json({ message: "Specified id is not valid" });
       return;
     }
 
-    const updatedProject = await Project.findByIdAndUpdate(id, req.body, {
+    const updatedUser = await User.findByIdAndUpdate(id, req.body, {
       new: true,
     });
-    res.json(updatedProject);
+    res.json(updatedUser);
   } catch (error) {
     res.json(error);
   }
