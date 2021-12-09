@@ -62,10 +62,10 @@ router
         res.status(404);
         throw new Error("Specified id is not valid");
       }
-
       const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
         new: true,
       });
+      console.log("updated user", updatedUser);
 
       res
         .status(200)
