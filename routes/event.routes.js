@@ -104,17 +104,6 @@ router
     const { title, description, icon, eventDate, maxAtendees } = req.body;
 
     if (!title) {
-      //   res
-      //     .status(400)
-      //     .json(
-      //       createResponseObject(
-      //         false,
-      //         res.statusCode,
-      //         "Please provide the required information for the event.",
-      //         null
-      //       )
-      //     );
-      //   return;
       res.status(400);
       throw new Error("Please provide the required information for the event.");
     }
