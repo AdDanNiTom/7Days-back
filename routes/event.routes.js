@@ -48,7 +48,7 @@ router.route("/edit/:eventId")
 router.get("/:eventId", async (req, res) => {
     try{
         const eventId = req.params.eventId;
-        const eventDetails = await Event.findById(eventId)
+        const eventDetails = await Event.findById(eventId).populate("owner")
         res.json(eventDetails)
     }
     catch (err){
@@ -58,14 +58,15 @@ router.get("/:eventId", async (req, res) => {
 
 // Create a new event
 router.post("/new", (req, res)=>{
-    const {title, description, icon, eventDate, maxAtendees} = req.body
+    console.log("req.body (backend): ",req.body)
+    const {title, description, owner, icon, eventDate, maxAtendees} = req.body
     
     if (title === "") {
         res.status(400).json({ message: "Please provide the required information for the event." });
         return;
     }
     
-    Event.create({title, description, icon, attendees:[], eventDate, maxAtendees})
+    Event.create({title, description, owner, icon, attendees:[], eventDate, maxAtendees})
     .then((createdEvent) => {
         // Send a json response containing the new event
         console.log("the event has been created")
@@ -82,8 +83,7 @@ router.post("/new", (req, res)=>{
 router.route("/")
 .get(async (req, res)=>{
     try {
-        const allEvents = await Event.find()
-        console.log("allEvents: ", allEvents)
+        const allEvents = await Event.find().populate("owner")
         res.json(allEvents)
     }
     catch (err) {
