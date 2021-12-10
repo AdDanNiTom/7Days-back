@@ -18,8 +18,11 @@ const usersSchema = new Schema({
       type: String, 
       required: true
     },
-    description: String,
-    profilePhoto: String,
+    biography: String,
+    profilePhoto: {
+      type: String,
+      default: "https://180dc.org/wp-content/uploads/2016/08/default-profile.png"
+    }
 })
 
 module.exports = model("User", usersSchema)
