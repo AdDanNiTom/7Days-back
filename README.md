@@ -21,24 +21,24 @@ Groups
 
 ## Routes
 
-| Method | Route                  | Description                                 | Body                         |
-| ------ | ---------------------- | ------------------------------------------- | ---------------------------- |
-| GET    | /                      | Homepage/documenation for the API           |                              |
-| ------ | **auth routes**        | ---------------------------------           | ---------------------------- |
-| POST   | /Sign-up               | Creates new user using body ============>   | username,email,password      |
-| POST   | /auth/login            | Checks credentials in DB, creates JWT token | username,password            |
-| GET    | /auth/verify           | Used to verify JWT stored on the client     | username,password            |
-| ------ | **users routes**       | ---------------------------------           | ---------------------------- |
-| GET    | /api/users             | List of Users                               |                              |
-| GET    | /api/users/:id         | One user                                    |                              |
-| PUT    | /api/users/:id/edit    | Edits one user                              |                              |
-| DELETE | /api/users/:id/delete  | Deletes one user                            |                              |
-| ------ | **events routes**      | ---------------------------------           | ---------------------------- |
-| GET    | /api/events            | List of events                              |                              |
-| GET    | /api/events/new        | Creates a new event                         |                              |
-| GET    | /api/events/:id        | One event                                   |                              |
-| PUT    | /api/events/:id/edit   | Edits an event                              |                              |
-| DELETE | /api/events/:id/delete | Deletes an event                            |                              |
+| Method | Route             | Description                                 | Body                                       |
+| ------ | ----------------- | ------------------------------------------- | ------------------------------------------ |
+| GET    | /                 | Homepage/documenation for the API           |                                            |
+| ------ | **auth routes**   | ---------------------------------           | ----------------------------               |
+| POST   | /Sign-up          | Creates new user using body ============>   | username,email,password                    |
+| POST   | /auth/login       | Checks credentials in DB, creates JWT token | username,password                          |
+| GET    | /auth/verify      | Used to verify JWT stored on the client     | username,password                          |
+| ------ | **users routes**  | ---------------------------------           | ----------------------------               |
+| GET    | /api/users        | List of Users                               |                                            |
+| GET    | /api/users/:id    | Gets information for one user               |                                            |
+| PUT    | /api/users/:id    | Edits a user                                | firstName, lastName, description           |
+| DELETE | /api/users/:id    | Deletes a user                              |                                            |
+| ------ | **events routes** | ---------------------------------           | ----------------------------               |
+| GET    | /api/events       | List of events                              |                                            |
+| POST   | /api/events       | Creates a new event                         | title, description, eventDate, maxAtendees |
+| GET    | /api/events/:id   | Gets information for one event              |                                            |
+| PUT    | /api/events/:id   | Edits an event                              | title, description, eventDate, maxAtendees |
+| DELETE | /api/events/:id   | Deletes an event                            |                                            |
 
 ## Models
 
