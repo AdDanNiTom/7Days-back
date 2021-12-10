@@ -12,7 +12,7 @@ router
   .get(async (req, res) => {
     try {
       const eventId = req.params.eventId;
-      const eventDetails = await Event.findById(eventId);
+      const eventDetails = await Event.findById(eventId).populate("owner");
       res
         .status(200)
         .json(
@@ -82,7 +82,7 @@ router
   // GET - Get all events
   .get(async (req, res) => {
     try {
-      const allEvents = await Event.find();
+      const allEvents = await Event.find().populate("owner");
       res
         .status(200)
         .json(
@@ -101,7 +101,8 @@ router
   })
   // POST - Create a new event
   .post((req, res) => {
-    const { title, description, icon, eventDate, maxAtendees } = req.body;
+    const { title, description, owner, icon, eventDate, maxAtendees } =
+      req.body;
 
     if (!title) {
       res.status(400);
@@ -111,6 +112,7 @@ router
     Event.create({
       title,
       description,
+      owner,
       icon,
       attendees: [],
       eventDate,
