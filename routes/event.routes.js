@@ -12,7 +12,9 @@ router
   .get(async (req, res) => {
     try {
       const eventId = req.params.eventId;
-      const eventDetails = await Event.findById(eventId).populate("owner attendees")
+      const eventDetails = await Event.findById(eventId).populate(
+        "owner attendees"
+      );
       res
         .status(200)
         .json(
@@ -77,40 +79,45 @@ router
     }
   });
 
-router
-.route("/:eventId/attendees")
-.put(async (req,res)=>{
-    try {
-        const { userId } = req.body;
-        const selectedEvent = await Event.findById(req.params.eventId)
-        if (selectedEvent.attendees.includes(userId)) {
-            const attendedEvent = await Event.findByIdAndUpdate(req.params.eventId, {$pull:{attendees:userId}})
-        } else {
-            const attendedEvent = await Event.findByIdAndUpdate(req.params.eventId, {$addToSet:{attendees:userId}})
-        }
-        res
-        .status(200)
-        .json(
-          createResponseObject(
-            true,
-            res.statusCode,
-            "Event attended successfully",
-            attendedEvent
-          )
-        );
-    } catch (err) {
-      res
-        .status(500)
-        .json(createResponseObject(false, res.statusCode, err.message, null));
+router.route("/:eventId/attendees").put(async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const selectedEvent = await Event.findById(req.params.eventId);
+    if (selectedEvent.attendees.includes(userId)) {
+      const attendedEvent = await Event.findByIdAndUpdate(req.params.eventId, {
+        $pull: { attendees: userId },
+      });
+    } else {
+      const attendedEvent = await Event.findByIdAndUpdate(req.params.eventId, {
+        $addToSet: { attendees: userId },
+      });
     }
-})
+    res
+      .status(200)
+      .json(
+        createResponseObject(
+          true,
+          res.statusCode,
+          "Event attended successfully",
+          attendedEvent
+        )
+      );
+  } catch (err) {
+    res
+      .status(500)
+      .json(createResponseObject(false, res.statusCode, err.message, null));
+  }
+});
 
 router
   .route("/")
   // GET - Get all events
   .get(async (req, res) => {
     try {
-      const allEvents = await Event.find().populate("owner attendees")
+      const { day } = req.query;
+      console.log(day);
+      const filter = { "date.weekday": { $eq: day } };
+      const allEvents = await Event.find(filter).populate("owner attendees");
       res
         .status(200)
         .json(
@@ -129,13 +136,27 @@ router
   })
   // POST - Create a new event
   .post((req, res) => {
-    const { title, description, owner, icon, eventDate, maxAtendees, location } =
-      req.body;
+    const {
+      title,
+      description,
+      owner,
+      icon,
+      eventDate,
+      maxAtendees,
+      location,
+    } = req.body;
 
     if (!title) {
       res.status(400);
       throw new Error("Please provide the required information for the event.");
     }
+
+    console.log(typeof eventDate);
+
+    const date = {
+      fullDate: eventDate,
+      weekday: new Date(eventDate).getDay(),
+    };
 
     Event.create({
       title,
@@ -143,9 +164,9 @@ router
       owner,
       icon,
       attendees: [],
-      eventDate,
+      date,
       maxAtendees,
-      location
+      location,
     })
       .then((createdEvent) => {
         // Send a json response containing the new event
