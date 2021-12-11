@@ -12,6 +12,7 @@ const eventsSchema = new Schema({
     ref: "User"
   },
   location: [{ type: Number }, { type: Number }],
+  address: String,
   attendees: [
     {
       type: Schema.Types.ObjectId,
