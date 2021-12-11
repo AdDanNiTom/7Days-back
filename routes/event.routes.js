@@ -129,7 +129,7 @@ router
   })
   // POST - Create a new event
   .post((req, res) => {
-    const { title, description, owner, icon, eventDate, maxAtendees } =
+    const { title, description, owner, icon, eventDate, maxAtendees, location } =
       req.body;
 
     if (!title) {
@@ -145,6 +145,7 @@ router
       attendees: [],
       eventDate,
       maxAtendees,
+      location
     })
       .then((createdEvent) => {
         // Send a json response containing the new event
