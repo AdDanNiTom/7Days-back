@@ -4,12 +4,12 @@ const { Schema, model } = mongoose;
 const eventsSchema = new Schema({
   title: {
     type: String,
-    required: true
+    required: true,
   },
   description: String,
   owner: {
     type: Schema.Types.ObjectId,
-    ref: "User"
+    ref: "User",
   },
   location: [{ type: Number }, { type: Number }],
   address: String,
@@ -20,8 +20,8 @@ const eventsSchema = new Schema({
     },
   ],
   icon: String,
-  eventDate: Date,
-  maxAtendees: Number
+  date: Object,
+  maxAtendees: Number,
 });
 
 module.exports = model("Event", eventsSchema);
