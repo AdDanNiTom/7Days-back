@@ -81,24 +81,29 @@ router
 
 router.route("/:eventId/attendees").put(async (req, res) => {
   try {
+    let attendedEvent = null
+    let attendingMsg = ""
     const { userId } = req.body;
     const selectedEvent = await Event.findById(req.params.eventId);
     if (selectedEvent.attendees.includes(userId)) {
-      const attendedEvent = await Event.findByIdAndUpdate(req.params.eventId, {
+      attendedEvent = await Event.findByIdAndUpdate(req.params.eventId, {
         $pull: { attendees: userId },
       });
+      attendingMsg = "not attending"
     } else {
-      const attendedEvent = await Event.findByIdAndUpdate(req.params.eventId, {
+      attendedEvent = await Event.findByIdAndUpdate(req.params.eventId, {
         $addToSet: { attendees: userId },
       });
+      attendingMsg = "attending"
     }
+    
     res
       .status(200)
       .json(
         createResponseObject(
           true,
           res.statusCode,
-          "Event attended successfully",
+          `You are ${attendingMsg} the event`,
           attendedEvent
         )
       );

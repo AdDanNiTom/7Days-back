@@ -98,7 +98,7 @@ router.post("/login", (req, res, next) => {
         console.log("inside if(pwdCorrect)");
 
         // Create an object that will be set as the token payload
-        const payload = { _id, email, username };
+        const payload = { _id };
 
         // Create and sign the token
         const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
@@ -113,6 +113,28 @@ router.post("/login", (req, res, next) => {
       }
     })
     .catch((err) => res.status(500).json({ message: "Internal Server Error" }));
+});
+
+// Social Login Routes
+router.post("/googleLogin", async (req, res) => {
+  // destructure request
+  const { email, name: username, imageUrl: profilePhoto } = req.body;
+  let user = null;
+  // check if user is already stored in our DB
+  user = await User.findOne({ email });
+  // if user isn't in our DB, create it
+  if (!user) user = await User.create({ email, username, profilePhoto });
+
+  const { _id } = user;
+  // create jwt token and send it as response
+  const payload = { _id };
+  const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
+    algorithm: "HS256",
+    expiresIn: "6h",
+  });
+
+  // Send the token as the response
+  res.status(200).json({ authToken: authToken });
 });
 
 // GET  /auth/verify  -  Used to verify JWT stored on the client
