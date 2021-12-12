@@ -114,10 +114,17 @@ router
   // GET - Get all events
   .get(async (req, res) => {
     try {
+      // build empty filter object
+      const filter = {};
+
+      // filter events by day
       const { day } = req.query;
-      console.log(day);
-      const filter = { "date.weekday": { $eq: day } };
+      if (day) filter["date.weekday"] = Number(day);
+
+      // mongoose .find()
       const allEvents = await Event.find(filter).populate("owner attendees");
+
+      // send response
       res
         .status(200)
         .json(
