@@ -144,6 +144,7 @@ router
       eventDate,
       maxAtendees,
       location,
+      address,
     } = req.body;
 
     if (!title) {
@@ -167,6 +168,7 @@ router
       date,
       maxAtendees,
       location,
+      address,
     })
       .then((createdEvent) => {
         // Send a json response containing the new event
