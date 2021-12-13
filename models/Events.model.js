@@ -21,6 +21,7 @@ const eventsSchema = new Schema({
   ],
   icon: String,
   date: Object,
+  time: String,
   maxAtendees: Number,
 });
 
