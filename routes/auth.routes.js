@@ -15,7 +15,7 @@ router.post("/signup", (req, res, next) => {
   const { email, password, username } = req.body;
 
   // Check if email or password or name are provided as empty string
-  if (email === "" || password === "" || username === "") {
+  if (!email || !password || !username) {
     res.status(400).json({ message: "Provide email, password and name" });
     return;
   }
@@ -73,7 +73,7 @@ router.post("/login", (req, res, next) => {
   const { email, password } = req.body;
 
   // Check if email or password are provided as empty string
-  if (email === "" || password === "") {
+  if (email === "" || !password) {
     res.status(400).json({ message: "Provide email and password." });
     return;
   }
@@ -89,8 +89,8 @@ router.post("/login", (req, res, next) => {
 
       // Compare the provided password with the one saved in the database
       //! IS NOT WORKING
-      // const passwordCorrect = bcrypt.compareSync(password, foundUser.password);
-      const passwordCorrect = true;
+      const passwordCorrect = bcrypt.compareSync(password, foundUser.password);
+      // const passwordCorrect = true;
 
       if (passwordCorrect) {
         // Deconstruct the user object to omit the password
@@ -120,10 +120,11 @@ router.post("/googleLogin", async (req, res) => {
   // destructure request
   const { email, name: username, imageUrl: profilePhoto } = req.body;
   let user = null;
+  let password = null;
   // check if user is already stored in our DB
   user = await User.findOne({ email });
   // if user isn't in our DB, create it
-  if (!user) user = await User.create({ email, username, profilePhoto });
+  if (!user) user = await User.create({ email, username, profilePhoto, password });
 
   const { _id } = user;
   // create jwt token and send it as response

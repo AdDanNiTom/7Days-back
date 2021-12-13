@@ -14,10 +14,7 @@ const usersSchema = new Schema({
     required: true,
   },
   lastName: String,
-  /* password: {
-      type: String, 
-      required: true
-    }, */
+  password: String,
   biography: String,
   profilePhoto: {
     type: String,
