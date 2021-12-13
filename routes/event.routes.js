@@ -81,22 +81,22 @@ router
 
 router.route("/:eventId/attendees").put(async (req, res) => {
   try {
-    let attendedEvent = null
-    let attendingMsg = ""
+    let attendedEvent = null;
+    let attendingMsg = "";
     const { userId } = req.body;
     const selectedEvent = await Event.findById(req.params.eventId);
     if (selectedEvent.attendees.includes(userId)) {
       attendedEvent = await Event.findByIdAndUpdate(req.params.eventId, {
         $pull: { attendees: userId },
       });
-      attendingMsg = "not attending"
+      attendingMsg = "not attending";
     } else {
       attendedEvent = await Event.findByIdAndUpdate(req.params.eventId, {
         $addToSet: { attendees: userId },
       });
-      attendingMsg = "attending"
+      attendingMsg = "attending";
     }
-    
+
     res
       .status(200)
       .json(
@@ -121,6 +121,10 @@ router
     try {
       // build empty filter object
       const filter = {};
+
+      // only show events in the future
+      const currentTimeParsed = Date.parse(new Date());
+      filter["date.parsedTime"] = { $gt: currentTimeParsed };
 
       // filter events by day
       const { day, category } = req.query;
@@ -166,11 +170,10 @@ router
       throw new Error("Please provide the required information for the event.");
     }
 
-    console.log(typeof eventDate);
-
     const date = {
       fullDate: eventDate,
       weekday: new Date(eventDate).getDay(),
+      parsedTime: Date.parse(eventDate),
     };
 
     Event.create({
