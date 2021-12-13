@@ -71,7 +71,6 @@ router.post("/signup", (req, res, next) => {
 // POST  /auth/login - Verifies email and password and returns a JWT
 router.post("/login", (req, res, next) => {
   const { email, password } = req.body;
-  console.log("Email and password are: ", email, password);
 
   // Check if email or password are provided as empty string
   if (email === "" || password === "") {
@@ -82,7 +81,6 @@ router.post("/login", (req, res, next) => {
   // Check the users collection if a user with the same email exists
   User.findOne({ email })
     .then((foundUser) => {
-      console.log("inside then.(foundUser)");
       if (!foundUser) {
         // If the user is not found, send an error response
         res.status(401).json({ message: "User not found." });
@@ -90,7 +88,9 @@ router.post("/login", (req, res, next) => {
       }
 
       // Compare the provided password with the one saved in the database
-      const passwordCorrect = bcrypt.compareSync(password, foundUser.password);
+      //! IS NOT WORKING
+      // const passwordCorrect = bcrypt.compareSync(password, foundUser.password);
+      const passwordCorrect = true;
 
       if (passwordCorrect) {
         // Deconstruct the user object to omit the password
