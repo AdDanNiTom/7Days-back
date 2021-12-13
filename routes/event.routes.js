@@ -123,8 +123,10 @@ router
       const filter = {};
 
       // filter events by day
-      const { day } = req.query;
+      const { day, category } = req.query;
       if (day) filter["date.weekday"] = Number(day);
+      // filter events by category
+      if (category) filter["icon"] = category;
 
       // mongoose .find()
       const allEvents = await Event.find(filter).populate("owner attendees");
