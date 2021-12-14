@@ -34,12 +34,9 @@ router
   // PUT - Edits an event
   .put(async (req, res) => {
     try {
-      const { title, description, eventDate, maxAtendees } = req.body;
+      const { title, description, icon, eventDate, maxAtendees, location, eventTime, address, viewport } = req.body;
       const updatedEvent = await Event.findByIdAndUpdate(req.params.eventId, {
-        title,
-        description,
-        eventDate,
-        maxAtendees,
+        title, description, icon, eventDate, maxAtendees, location, eventTime, address, viewport
       });
       res
         .status(200)
