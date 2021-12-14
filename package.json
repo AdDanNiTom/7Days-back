@@ -1,5 +1,9 @@
 {
   "name": "7days-back",
+  "engines": {
+    "node": "16",
+    "npm": "8"
+  },
   "version": "1.0.0",
   "description": "## Description 7Days is an app that let's you plan your next 7 days interactively with your friends based on your free time",
   "main": "index.js",
