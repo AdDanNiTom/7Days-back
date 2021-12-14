@@ -7,7 +7,7 @@ require("./db");
 
 app.use(express.json());
 
-app.get("/", (req, res) => res.status(200).json({ name: "Adrian" }));
+app.get("/", (req, res) => res.send("The backend is working"));
 
 // Auth routes handling in app.js
 const authRouter = require("./routes/auth.routes");
