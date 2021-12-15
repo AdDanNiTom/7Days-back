@@ -14,6 +14,7 @@ router
         const {content, authorId, eventId} = req.body
         const newComment = await Comment.create({content,author:authorId})
         const eventCommentedOn = await Event.findByIdAndUpdate(eventId,{$push:{comments:newComment._id}})
+        res.status(200).json(createResponseObject(true, res.statusCode, "comment posted", eventCommentedOn));
     } catch (err) {
         console.log(err)
     }
