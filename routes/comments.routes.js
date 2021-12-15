@@ -9,7 +9,6 @@ const createResponseObject = require("../utils/createResponseObject");
 
 router.route("/").post(async (req, res) => {
   try {
-    console.log(req.body);
     const { content, authorId, eventId } = req.body;
     const newComment = await Comment.create({ content, author: authorId });
     const eventCommentedOn = await Event.findByIdAndUpdate(eventId, {
