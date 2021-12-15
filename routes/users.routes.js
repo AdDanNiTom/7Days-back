@@ -2,8 +2,22 @@ const express = require("express");
 const User = require("../models/Users.model");
 const mongoose = require("mongoose");
 const router = express.Router();
-
+const fileUploader = require("../config/cloudinary.config");
 const createResponseObject = require("../utils/createResponseObject");
+
+// TO CREATE - POST 'api/upload'
+router.post(
+  "/upload",
+  fileUploader.single("profilePhoto"),
+  (req, res, next) => {
+    if (!req.file) {
+      next(new Error("No file uploaded"));
+      return;
+    }
+    // GET the URL of the uploaded file and send it as a response
+    res.json({ secure_url: req.file.path });
+  }
+);
 
 // GET - DISPLAYS ALL USERS
 router.get("/", async (req, res) => {
@@ -28,6 +42,7 @@ router.get("/", async (req, res) => {
 
 router
   .route("/:userId")
+
   // GET - FINDS ONE USER
   .get(async (req, res) => {
     try {
@@ -53,6 +68,7 @@ router
       res.json(createResponseObject(false, res.statusCode, err.message, null));
     }
   })
+
   // PUT - EDIT USER INFO
   .put(async (req, res) => {
     try {
@@ -62,6 +78,7 @@ router
         res.status(404);
         throw new Error("Specified id is not valid");
       }
+      console.log("req.body ==> ", req.body);
       const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
         new: true,
       });
@@ -81,6 +98,7 @@ router
       res.json(createResponseObject(false, res.statusCode, err.message, null));
     }
   })
+
   // DELETE - DELETE A USER
   .delete(async (req, res) => {
     try {
