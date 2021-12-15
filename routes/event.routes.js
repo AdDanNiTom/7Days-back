@@ -12,9 +12,16 @@ router
   .get(async (req, res) => {
     try {
       const eventId = req.params.eventId;
-      const eventDetails = await Event.findById(eventId).populate(
-        "owner attendees"
-      );
+      const eventDetails = await Event.findById(eventId)
+        .populate("owner attendees")
+        .populate({
+          path: "comments",
+          model: "Comment",
+          populate: {
+            path: "author",
+            model: "User",
+          },
+        });
       res
         .status(200)
         .json(
@@ -34,9 +41,27 @@ router
   // PUT - Edits an event
   .put(async (req, res) => {
     try {
-      const { title, description, icon, eventDate, maxAtendees, location, eventTime, address, viewport } = req.body;
+      const {
+        title,
+        description,
+        icon,
+        eventDate,
+        maxAtendees,
+        location,
+        eventTime,
+        address,
+        viewport,
+      } = req.body;
       const updatedEvent = await Event.findByIdAndUpdate(req.params.eventId, {
-        title, description, icon, eventDate, maxAtendees, location, eventTime, address, viewport
+        title,
+        description,
+        icon,
+        eventDate,
+        maxAtendees,
+        location,
+        eventTime,
+        address,
+        viewport,
       });
       res
         .status(200)
@@ -130,7 +155,16 @@ router
       if (category) filter["icon"] = category;
 
       // mongoose .find()
-      const allEvents = await Event.find(filter).populate("owner attendees");
+      const allEvents = await Event.find(filter)
+        .populate("owner attendees")
+        .populate({
+          path: "comments",
+          model: "Comment",
+          populate: {
+            path: "author",
+            model: "User",
+          },
+        });
 
       // send response
       res
@@ -160,7 +194,7 @@ router
       maxAtendees,
       location,
       address,
-      time
+      time,
     } = req.body;
 
     if (!title) {
@@ -184,7 +218,7 @@ router
       maxAtendees,
       location,
       address,
-      time
+      time,
     })
       .then((createdEvent) => {
         // Send a json response containing the new event
