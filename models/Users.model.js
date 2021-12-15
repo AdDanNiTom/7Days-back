@@ -18,8 +18,8 @@ const usersSchema = new Schema({
   biography: String,
   profilePhoto: {
     type: String,
-    default: "https://180dc.org/wp-content/uploads/2016/08/default-profile.png",
-  },
+    default: "https://180dc.org/wp-content/uploads/2016/08/default-profile.png"
+  }
 });
 
 module.exports = model("User", usersSchema);
