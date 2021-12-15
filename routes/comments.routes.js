@@ -11,8 +11,8 @@ router
   .route("/")
   .post(async (req,res) => {
     try {
-        const {content, id} = req.body
-        const newComment = await Comment.create({content,author:id})
+        const {content, authorId, eventId} = req.body
+        const newComment = await Comment.create({content,author:authorId})
         const eventCommentedOn = await Event.findByIdAndUpdate(eventId,{$push:{comments:newComment._id}})
     } catch (err) {
         console.log(err)
