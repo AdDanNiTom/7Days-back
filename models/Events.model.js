@@ -23,6 +23,10 @@ const eventsSchema = new Schema({
   date: Object,
   time: String,
   maxAtendees: Number,
+  comments: [{
+    type: Schema.Types.ObjectId,
+    ref: "Comment"
+  }]
 });
 
 module.exports = model("Event", eventsSchema);
