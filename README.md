@@ -2,93 +2,114 @@
 
 ## Description
 
-7Days is an app that let's you plan your next 7 days interactively with your friends based on your free time
-
-## User stories (MVP)
-
-404 - Occupied - As users, we want to see a fun page when URL does not exist
-500 - As users, we want to be told when an error has occured and it is not our fault
-Login - As users, we would like a page where we can easily login
-Sign Up - As users, we want to be able to quickly and easily join the platform
-Map - As users, we would like to browse a map to see what's event are taking place.
-Planner - As users, we want to be able to search for plans we might be interested in and propose our own to our friends.
-Profile page (editable) - As users, we want to be able to update our details, display our plans and see our connections.
-
-## Backlog / Nice to have
-
-Social media sign up
-Groups
+API for seven-app
 
 ## Routes
 
-| Method | Route             | Description                                 | Body                                       |
-| ------ | ----------------- | ------------------------------------------- | ------------------------------------------ |
-| GET    | /                 | Homepage/documenation for the API           |                                            |
-| ------ | **auth routes**   | ---------------------------------           | ----------------------------               |
-| POST   | /Sign-up          | Creates new user using body ============>   | username,email,password                    |
-| POST   | /auth/login       | Checks credentials in DB, creates JWT token | username,password                          |
-| GET    | /auth/verify      | Used to verify JWT stored on the client     | username,password                          |
-| ------ | **users routes**  | ---------------------------------           | ----------------------------               |
-| GET    | /api/users        | List of Users                               |                                            |
-| GET    | /api/users/:id    | Gets information for one user               |                                            |
-| PUT    | /api/users/:id    | Edits a user                                | firstName, lastName, description           |
-| DELETE | /api/users/:id    | Deletes a user                              |                                            |
-| ------ | **events routes** | ---------------------------------           | ----------------------------               |
-| GET    | /api/events       | List of events                              |                                            |
-| POST   | /api/events       | Creates a new event                         | title, description, eventDate, maxAtendees |
-| GET    | /api/events/:id   | Gets information for one event              |                                            |
-| PUT    | /api/events/:id   | Edits an event                              | title, description, eventDate, maxAtendees |
-| DELETE | /api/events/:id   | Deletes an event                            |                                            |
+| Method | Route               | Description                                 | Body                                       |
+| ------ | ------------------- | ------------------------------------------- | ------------------------------------------ |
+| GET    | /                   | Homepage/documenation for the API           |                                            |
+| ------ | **auth routes**     | ---------------------------------           | ----------------------------               |
+| POST   | /auth/signup        | Creates new user using body ============>   | username,email,password                    |
+| POST   | /auth/login         | Checks credentials in DB, creates JWT token | username,password                          |
+| POST   | /auth/googleLogin   | Used to login with google                   | google token                               |
+| GET    | /auth/verify        | Used to verify JWT stored on the client     |                                            |
+| ------ | **users routes**    | ---------------------------------           | ----------------------------               |
+| GET    | /api/users          | List of Users                               |                                            |
+| GET    | /api/users/:id      | Gets information for one user               |                                            |
+| PUT    | /api/users/:id      | Edits a user                                | firstName, lastName, description           |
+| DELETE | /api/users/:id      | Deletes a user                              |                                            |
+| ------ | **events routes**   | ---------------------------------           | ----------------------------               |
+| GET    | /api/events         | List of events                              |                                            |
+| POST   | /api/events         | Creates a new event                         | title, description, eventDate, maxAtendees |
+| GET    | /api/events/:id     | Gets information for one event              |                                            |
+| PUT    | /api/events/:id     | Edits an event                              | title, description, eventDate, maxAtendees |
+| DELETE | /api/events/:id     | Deletes an event                            |                                            |
+| ------ | **comments routes** | ---------------------------------           | ----------------------------               |
+| POST   | /api/comments       | Creates a new comment                       | content, authorId, eventId                 |
 
 ## Models
 
-```
-const { Schema, model } = require(‘mongoose’);
-const userSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    username: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        unique: true,
-        required: true
-    },
-    favourites: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: “favourites”
-        }
-    ]
-});
-const User = model(‘User’, userSchema);
-module.exports = User;
+### User
 
-const { Schema, model } = require(‘mongoose’);
-const recipeSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    taste: {
-        type: Array,
-        items: {
-            “type”: String,
-            “enum”: [Sweet, Salty, Sour, Bitter, Savory, Fatty]
-        }
-    }
-});
-const Recipe = model(‘Recipe’, recipeSchema);
-module.exports = Recipe;
-```
+    username
+    - type: String
+    - required: true
 
-## Links
+    email
+    - type: String
+    - unique: true
+    - required: true
+
+    password
+    - type: String
+
+    firstName
+    - type: String
+
+    lastName
+    - type: String
+
+    biography
+    - type: String
+
+    profilePhoto
+    - type: String
+    - default: "https://180dc.org/wp-content/uploads/2016/08/default-profile.png"
+
+### Event
+
+    title
+    - type: String
+
+    description
+    - type: String
+
+    owner
+    - type: Schema.Types.ObjectId
+    - ref: "User"
+
+    location
+    - type: Array
+        - type: Number
+        - type: Number
+
+    address
+    - type: String
+
+    attendees
+    - type: Array
+        - type: Schema.Types.ObjectId
+        - ref: "User"
+
+    icon
+    - type: String
+
+    date
+    - type: Object
+        - fullDate: Object
+        - weekday: Number
+        - parsed: Number
+
+    time
+    - type: Date
+
+    maxAtendees
+    - type: Number
+
+    comments
+    - type: Array
+        - type: Schema.Types.ObjectId
+        - ref: "Comment"
+
+### Comments
+
+    content
+    - type: String
+    - required: true
+
+    author
+    - type: Schema.Types.ObjectId
+    - ref: "User"
+
+    {timestamps: true}
