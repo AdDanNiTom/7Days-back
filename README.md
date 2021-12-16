@@ -29,3 +29,87 @@ API for seven-app
 | POST   | /api/comments       | Creates a new comment                       | content, authorId, eventId                 |
 
 ## Models
+
+### User
+
+    username
+    - type: String
+    - required: true
+
+    email
+    - type: String
+    - unique: true
+    - required: true
+
+    password
+    - type: String
+
+    firstName
+    - type: String
+
+    lastName
+    - type: String
+
+    biography
+    - type: String
+
+    profilePhoto
+    - type: String
+    - default: "https://180dc.org/wp-content/uploads/2016/08/default-profile.png"
+
+### Event
+
+    title
+    - type: String
+
+    description
+    - type: String
+
+    owner
+    - type: Schema.Types.ObjectId
+    - ref: "User"
+
+    location
+    - type: Array
+        - type: Number
+        - type: Number
+
+    address
+    - type: String
+
+    attendees
+    - type: Array
+        - type: Schema.Types.ObjectId
+        - ref: "User"
+
+    icon
+    - type: String
+
+    date
+    - type: Object
+        - fullDate: Object
+        - weekday: Number
+        - parsed: Number
+
+    time
+    - type: Date
+
+    maxAtendees
+    - type: Number
+
+    comments
+    - type: Array
+        - type: Schema.Types.ObjectId
+        - ref: "Comment"
+
+### Comments
+
+    content
+    - type: String
+    - required: true
+
+    author
+    - type: Schema.Types.ObjectId
+    - ref: "User"
+
+    {timestamps: true}
