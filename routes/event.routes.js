@@ -148,6 +148,7 @@ router
       const currentTimeParsed = Date.parse(new Date());
       filter["date.parsedTime"] = { $gt: currentTimeParsed };
 
+      //! Filtering is now handled in the front
       // filter events by day
       const { day, category } = req.query;
       if (day) filter["date.weekday"] = Number(day);
@@ -156,6 +157,7 @@ router
 
       // mongoose .find()
       const allEvents = await Event.find(filter)
+        .sort({ "date.weekday": 1 })
         .populate("owner attendees")
         .populate({
           path: "comments",
