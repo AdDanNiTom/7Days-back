@@ -5,8 +5,133 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>seven-api documentation</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Hi</h1>
+    <h1>API Documentation</h1>
+
+    <table class="main-table">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Route</th>
+          <th>Description</th>
+          <th>Request Body</th>
+          <th>Response</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>GET</td>
+          <td>/</td>
+          <td>Homepage/documenation for the API</td>
+          <td>None</td>
+          <td>index.html</td>
+        </tr>
+        <tr>
+          <td><h3>Auth Routes</h3></td>
+        </tr>
+        <tr>
+          <td>POST</td>
+          <td>/auth/signup</td>
+          <td>Creates new user</td>
+          <td>username<br />email<br />password</td>
+          <td>An object with the newly created user</td>
+        </tr>
+        <tr>
+          <td>POST</td>
+          <td>/auth/login</td>
+          <td>Checks credentials in DB, creates JWT token</td>
+          <td>username<br />password</td>
+          <td>A JWT Token</td>
+        </tr>
+        <tr>
+          <td>GET</td>
+          <td>/auth/verify</td>
+          <td>Used to verify JWT stored on the client</td>
+          <td>None</td>
+          <td>Returns the same JWT token if it hasn't changed</td>
+        </tr>
+        <tr>
+          <td><h3>Users Routes</h3></td>
+        </tr>
+        <tr>
+          <td>GET</td>
+          <td>/api/users</td>
+          <td>Gets list of all users</td>
+          <td>None</td>
+          <td>A JSON object with all users in the data field</td>
+        </tr>
+        <tr>
+          <td>GET</td>
+          <td>/api/users/:id</td>
+          <td>Gets information for one user</td>
+          <td>None</td>
+          <td>A JSON object with one user in the data field</td>
+        </tr>
+        <tr>
+          <td>PUT</td>
+          <td>/api/users/:id</td>
+          <td>Edits a user</td>
+          <td>firstName<br />lastName<br />description</td>
+          <td>An object, containing response info and updated user</td>
+        </tr>
+        <tr>
+          <td>DELETE</td>
+          <td>/api/users/:id</td>
+          <td>Deletes a user</td>
+          <td>None</td>
+          <td>An object, containing response info and the deleted user</td>
+        </tr>
+        <tr>
+          <td><h3>Events Routes</h3></td>
+        </tr>
+        <tr>
+          <td>GET</td>
+          <td>/api/events</td>
+          <td>List of events</td>
+          <td>None</td>
+          <td>An object, containg the list of events in the data property</td>
+        </tr>
+        <tr>
+          <td>POST</td>
+          <td>/api/events</td>
+          <td>Creates a new event</td>
+          <td>title<br />description<br />eventDate<br />maxAtendees</td>
+          <td>An object, with the newly created event in the data field</td>
+        </tr>
+        <tr>
+          <td>GET</td>
+          <td>/api/events/:id</td>
+          <td>Gets information for one event</td>
+          <td>None</td>
+          <td>An object containg the specified event in the data field</td>
+        </tr>
+        <tr>
+          <td>PUT</td>
+          <td>/api/events/:id</td>
+          <td>Edits an event</td>
+          <td>title<br />description<br />eventDate<br />maxAtendees</td>
+          <td>An object, with the updated event in the data field</td>
+        </tr>
+        <tr>
+          <td>DELETE</td>
+          <td>/api/events/:id</td>
+          <td>Deletes an event</td>
+          <td>None</td>
+          <td>An object with the deleted event in the data field</td>
+        </tr>
+        <tr>
+          <td><h3>Comments Routes</h3></td>
+        </tr>
+        <tr>
+          <td>POST</td>
+          <td>/api/comments</td>
+          <td>Creates a new comment</td>
+          <td>content<br />authorId<br />eventId</td>
+          <td>An object, with the newly created comment in the data field</td>
+        </tr>
+      </tbody>
+    </table>
   </body>
 </html>
